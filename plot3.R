@@ -1,0 +1,16 @@
+plot3 <- function(){
+  data <- read.table("household_power_consumption.txt",header=TRUE,sep=";")
+  data$Date <- as.Date(data$Date,format="%d/%m/%Y")
+  data$Sub_metering_1 <- as.numeric(data$Sub_metering_1)
+  data$Sub_metering_2 <- as.numeric(data$Sub_metering_2)
+  data$Sub_metering_3 <- as.numeric(data$Sub_metering_3)
+  data2 <- subset(data, Date > "2007-01-31" & Date < "2007-02-03")
+  datetime <- as.POSIXct(paste(data2$Date,data2$Time),format="%Y-%m-%d %H:%M:%S")
+  png(filename="plot3.png",width=480,height=480)
+  plot(datetime,data2$Sub_metering_1,type="n",ylab="Energy sub metering",xlab="")
+  points(datetime,data2$Sub_metering_1,col="black",type="l")
+  points(datetime,data2$Sub_metering_2,col="red",type="l")
+  points(datetime,data2$Sub_metering_3,col="blue",type="l")
+  legend("topright",lty=1,col=c("black","red","blue"),legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"))
+  dev.off()
+}
